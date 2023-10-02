@@ -1,0 +1,131 @@
+package com.toki.clever.commands.methods.Old;
+
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.channel.concrete.Category;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+
+import java.io.IOException;
+import java.util.List;
+
+import static com.toki.clever.commands.methods.Old.CommandSort.hashMessage;
+import static com.toki.clever.webscraper.LiteroticaGenres.*;
+import static com.toki.clever.webscraper.LiteroticaGenres.getLinkPopularity;
+
+public class CommandMarkAsRead {
+
+    public static void markAsRead(SlashCommandInteractionEvent event) {
+        String userTag = event.getUser().getAsTag();
+        OptionMapping linkOption = event.getOption("link");
+
+        if (linkOption != null) {
+            String link = linkOption.getAsString();
+            System.out.println("-[" + link + "]");
+            try {
+                boolean alreadyMarked = searchAndMarkMessageRead(event, link);
+
+                if(!alreadyMarked) {
+                    if (userTag.equals("Toki#1111")) {
+                        event.reply("trever, you've been naughty a naughty boy hehe :face_with_spiral_eyes::flushed:\n" +
+                                "i marked this story as read for you ;)").queue();
+                    } else if (userTag.equals("rcmvnova#0777")) {
+                        event.reply("oh my, natalie, what a naughty girl :face_with_spiral_eyes::flushed:\n" +
+                                "i marked this story as read for you ;)").queue();
+                    } else {
+                        event.reply("oh wow "
+                                + userTag.toLowerCase().charAt(0)
+                                + userTag.substring(1, userTag.indexOf("#"))
+                                + " :face_with_spiral_eyes::flushed:\nyou are so naughty hehe\ni marked this story as read for you hehe").queue();
+                    }
+                }
+                else {
+                    if(userTag.equals("Toki#1111")) {
+                        event.reply("ummmm, i already marked this story as read trev...").queue();
+                    }
+                    else if(userTag.equals("rcmvnova#0777")) {
+                        event.reply("ummmm nat, i already marked this story as read...").queue();
+                    }
+                    else {
+                        event.reply("ummm "
+                                + userTag.toLowerCase().charAt(0)
+                                + userTag.substring(1, userTag.indexOf("#"))
+                                + ", i already marked this story as read trev...").queue();
+                    }
+                }
+            }
+            catch(IOException a) {
+                System.out.println("Mark as read failure, already marked as read...");
+            }
+        }
+    }
+
+
+    public static boolean searchAndMarkMessageRead(SlashCommandInteractionEvent event, String link) throws IOException {
+        // Gets category The Library and all channels within
+        Category category = event.getGuild().getCategoryById("1100605246042013779");
+        List<GuildChannel> currentGenres = category.getChannels();
+        for (GuildChannel genre : currentGenres) {
+            // Gets genre name from currentGenres list
+            String currentGenre = String.valueOf(genre);
+            currentGenre = currentGenre.substring(currentGenre.indexOf(":") + 1, currentGenre.indexOf("("));
+
+            // Gets all data from channel with genre name
+            TextChannel textchannel = event.getGuild().getTextChannelsByName(currentGenre, true).get(0);
+            MessageHistory history = MessageHistory.getHistoryFromBeginning(textchannel).complete();
+            List<Message> messages = history.getRetrievedHistory();
+
+            for (Message value : messages) {
+                String currentMessage = value.getContentRaw();
+                // make it not contain read
+                Emoji emoji = Emoji.fromUnicode("✅");
+                if (currentMessage.contains(link)) {
+                    List<MessageReaction> reactions = value.getReactions();
+                    if(reactions.size() == 0) {
+                        value.addReaction(emoji).complete();
+                        editMessage(event, link, value);
+                    }
+                    else {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+    public static void editMessage(SlashCommandInteractionEvent event, String link, Message value) throws IOException {
+        String[] emojis = {":flushed:", ":face_with_spiral_eyes:", ":weary:", ":smirk:", ":eyes:", ":hot_face:", ":biting_lip:", ":peach:", ":eggplant:", ":pregnant_woman_tone1:"};
+        int i = (int)(Math.random() * 9) + 1; // For getting a random emoji
+        String[] genres = getTags(link); // Creates array of links tags
+        String hashMessage = hashMessage(event, genres); // Creates message that mentions each genre
+        double rating = getLinkRating(link); // Gets rating of story
+        int readTime = getLinkReadTime(link); // Gets time to read story
+        String description = getLinkDescription(link); // Gets description of story
+        String defaultTitle = getLinkTitle(link); // Gets title of story link
+        String title = "**" + defaultTitle + "**"; // Makes the title bold in discord
+        double fullPop = getLinkPopularity(link); // Gets views of story
+        // Simplifies views number
+        String pop = "";
+        if(fullPop > 1000) {
+            int popNum = (int)fullPop / 1000;
+            pop = popNum + "k";
+        }
+        else
+            pop = String.valueOf(fullPop);
+        value.editMessage(title + " - " + readTime + " min to read\n" +
+                    "[ " + rating + " *rating* || " + emojis[i] + " || " + pop + " *views* ]\n" +
+                    "<" + link + ">\n" +
+                    hashMessage + "\n" +
+                    description).queue();
+
+    }
+}

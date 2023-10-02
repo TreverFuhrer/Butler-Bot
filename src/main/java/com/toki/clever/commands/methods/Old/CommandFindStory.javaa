@@ -1,0 +1,268 @@
+package com.toki.clever.commands.methods.Old;
+
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.channel.concrete.Category;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+
+import java.util.List;
+
+public class CommandFindStory {
+
+    public static void findStory(SlashCommandInteractionEvent event) {
+        String userTag = event.getUser().getAsTag();
+        OptionMapping keyWordOption = event.getOption("key_word");
+        OptionMapping keyWord2Option = event.getOption("key_word2");
+        OptionMapping tag1Option = event.getOption("tag");
+        OptionMapping tag2Option = event.getOption("tag2");
+        OptionMapping tag3Option = event.getOption("tag3");
+        OptionMapping countOption = event.getOption("story_count");
+        OptionMapping choiceOption = event.getOption("popularity");
+        OptionMapping readOption = event.getOption("exclude_read");
+
+
+        if (keyWordOption != null || tag1Option != null || tag2Option != null || tag3Option != null) {
+            // Sends a message immediately
+            if (userTag.equals("Toki#1111"))
+                event.reply("hey trev, here's all the stories you wanted\nbtw, anything already found\nint the last 15 message wont be in the list\n*****").queue();
+            else if (userTag.equals("rcmvnova#0777"))
+                event.reply("hello princess nat, here are your royal stories :woman_kneeling_tone1:\nbtw, anything already found\nint the last 15 message wont be in the list\n*****").queue();
+            else
+                event.reply("hey "
+                        + userTag.toLowerCase().charAt(0)
+                        + userTag.substring(1, userTag.indexOf("#"))
+                        + ",\nhere's the stories you wanted...\nbtw, anything already found\nint the last 15 message wont be in the list\n*****").queue();
+
+
+            boolean exclude_read = readOption.getAsBoolean();
+
+            runSearch(event, keyWordOption, keyWord2Option, tag1Option, tag2Option, tag3Option);
+
+        }
+        // Gets how many stories to find
+        String count;
+        if (countOption != null) {
+            count = countOption.getAsString();
+        }
+
+        // Sort by Rating or Popularity
+        if (choiceOption != null) {
+            String choice = choiceOption.getAsString();
+            if (choice.equals("popularity")) {
+
+            } else {
+
+            }
+        }
+        else {
+            if (userTag.equals("Toki#1111"))
+                event.reply("silly trev, you need to pick a key word or a tag smh :woman_facepalming::skin-tone-1:").queue();
+            else if (userTag.equals("rcmvnova#0777"))
+                event.reply("silly nat, you need to pick a key word or a tag smh :woman_facepalming::skin-tone-1:").queue();
+            else
+                event.reply("silly "
+                        + userTag.toLowerCase().charAt(0)
+                        + userTag.substring(1, userTag.indexOf("#"))
+                        + ", you need to pick a key word or a tag smh :woman_facepalming::skin-tone-1:").queue();
+        }
+        System.out.println("Finished looking for stories");
+}
+
+
+
+
+    /**
+     * Converts tag named channel into a mention of that channel
+     * @param event message command event
+     * @param channel MessageChannel - tag as a channel
+     */
+    public static String getTagAsChannelMention(SlashCommandInteractionEvent event, MessageChannel channel) {
+        // Gets channel name of tag from string
+        String channelString = String.valueOf(channel);
+        channelString = channelString.substring(channelString.indexOf(":") + 1,channelString.indexOf("("));
+
+        // Creates a tag to search the genre channels with
+        StringBuilder messageBuilder = new StringBuilder();
+        TextChannel choiceChannel = event.getGuild().getTextChannelsByName(channelString, true).get(0);
+        messageBuilder.append(choiceChannel.getAsMention());
+        return messageBuilder.toString();
+    }
+
+
+
+
+
+    /**
+     * Gets users tag choice and returns it as a channel mention
+     * @param event message command event
+     * @param tagOption OptionMapping - tag from user
+     */
+    public static String getTagChoice(SlashCommandInteractionEvent event, OptionMapping tagOption) {
+        MessageChannel tag = tagOption.getAsChannel().asGuildMessageChannel();
+        return getTagAsChannelMention(event, tag);
+    }
+
+
+
+
+
+    /**
+     * Checks if that link was already sorted before
+     * @param event message command event
+     * @param tag name of channel to search with
+     */
+    public static void searchDatabase(SlashCommandInteractionEvent event, String tag) {
+        // Gets category The Library and all channels within
+        Category category = event.getGuild().getCategoryById("1100605246042013779");
+        List<GuildChannel> currentGenres = category.getChannels();
+        for (GuildChannel genre : currentGenres) {
+            // Gets genre name from currentGenres list
+            String currentGenre = String.valueOf(genre);
+            currentGenre = currentGenre.substring(currentGenre.indexOf(":") + 1, currentGenre.indexOf("("));
+
+            // Gets all data from channel with genre name
+            TextChannel textchannel = event.getGuild().getTextChannelsByName(currentGenre, true).get(0);
+            MessageHistory history = MessageHistory.getHistoryFromBeginning(textchannel).complete();
+            List<Message> messages = history.getRetrievedHistory();
+
+            for (Message value : messages) {
+                String currentMessage = value.getContentRaw();
+
+                // For checking if its been read
+                List<MessageReaction> reactions = value.getReactions(); // Gets current messages reactions
+                for(MessageReaction message : reactions) {
+                    if(message.toString().equals(":white_check_mark:")) {
+
+                    }
+                }
+                // or event.getReactionEmote().getName.equals("");
+
+
+                // make it not contain read
+                if (currentMessage.contains(tag)) {
+                    MessageChannel currentChannel = event.getChannel();
+                    List<Message> recent = currentChannel.getHistory().retrievePast(15).complete();
+                    boolean isRecent = false;
+                    for (Message message : recent) {
+                        if (message.getContentRaw().contains(currentMessage))
+                            isRecent = true;
+                    }
+                    if (!isRecent)
+                        event.getChannel().sendMessage(currentMessage).queue();
+                    // Add message counter to stop at story_count
+                    // Add each message to a String array then send message with highest rating
+                }
+            }
+        }
+    }
+
+
+
+
+
+    public static void runSearch(SlashCommandInteractionEvent event, OptionMapping keyWordOption, OptionMapping keyWord2Option, OptionMapping tag1Option, OptionMapping tag2Option, OptionMapping tag3Option) {
+        String chosenOptions = "User chose a: ";
+        if (keyWordOption != null)
+            chosenOptions += "KeyWord1 ";
+        if (keyWord2Option != null)
+            chosenOptions += "KeyWord2 ";
+        if (tag1Option != null)
+            chosenOptions += "Tag1 ";
+        if (tag2Option != null)
+            chosenOptions += "Tag2 ";
+        if (tag3Option != null)
+            chosenOptions += "Tag3";
+        String keyWord, keyWord2, tag1Choice, tag2Choice, tag3Choice;
+        switch (chosenOptions) {
+            case "User chose a: KeyWord1 KeyWord2 Tag1 Tag2 Tag3": // 5 options
+                keyWord = keyWordOption.getAsString();
+                keyWord2 = keyWord2Option.getAsString();
+                tag1Choice = getTagChoice(event, tag1Option);
+                tag2Choice = getTagChoice(event, tag2Option);
+                tag3Choice = getTagChoice(event, tag3Option);
+                searchDatabase(event, keyWord);
+                break;
+            case "User chose a: KeyWord1 KeyWord2 Tag1 Tag2 ": // 4 options
+
+                break;
+            case "User chose a: KeyWord1 KeyWord2 Tag1 Tag3":
+
+                break;
+            case "User chose a: KeyWord1 KeyWord2 Tag2 Tag3":
+
+                break;
+            case "User chose a: KeyWord1 Tag1 Tag2 Tag3":
+
+                break;
+            case "User chose a: KeyWord2 Tag1 Tag2 Tag3":
+
+                break;
+            case "User chose a: KeyWord1 KeyWord2 Tag1 ": // 3 options
+
+                break;
+            case "User chose a: KeyWord1 KeyWord2 Tag2 ":
+
+                break;
+            case "User chose a: KeyWord1 KeyWord2 Tag3":
+
+                break;
+            case "User chose a: KeyWord1 Tag2 Tag3":
+
+                break;
+            case "User chose a: KeyWord1 Tag1 Tag3":
+
+                break;
+            case "User chose a: KeyWord1 Tag1 Tag2 ":
+                break;
+
+            case "User chose a: KeyWord2 Tag1 Tag2 ":
+                break;
+            case "User chose a: KeyWord2 Tag1 Tag3":
+                break;
+            case "User chose a: KeyWord2 Tag2 Tag3":
+                break;
+            case "User chose a: Tag1 Tag2 Tag3":
+                break;
+            case "User chose a: KeyWord1 KeyWord2 ": // 2 Options
+                break;
+            case "User chose a: KeyWord1 Tag1 ":
+                break;
+            case "User chose a: KeyWord1 Tag2 ":
+                break;
+            case "User chose a: KeyWord1 Tag3":
+                break;
+            case "User chose a: KeyWord2 Tag1 ":
+                break;
+            case "User chose a: KeyWord2 Tag2 ":
+                break;
+            case "User chose a: KeyWord2 Tag3":
+                break;
+            case "User chose a: Tag1 Tag2 ":
+                break;
+            case "User chose a: Tag1 Tag3":
+                break;
+            case "User chose a: Tag2 Tag3":
+                break;
+            case "User chose a: KeyWord1 ": // 1 Options
+                break;
+            case "User chose a: KeyWord2 ":
+                break;
+            case "User chose a: Tag1 ":
+                break;
+            case "User chose a: Tag2 ":
+                break;
+            case "User chose a: Tag3":
+
+        }
+    }
+
+
+
+
+
+}
