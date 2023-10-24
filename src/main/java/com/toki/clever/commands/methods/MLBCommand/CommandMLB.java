@@ -1,13 +1,9 @@
-package com.toki.clever.commands.methods;
+package com.toki.clever.commands.methods.MLBCommand;
 
-import com.toki.clever.custom.MLB;
 import com.toki.clever.webscraper.MLBWebScraper;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
-import net.dv8tion.jda.api.requests.Route;
-import net.dv8tion.jda.internal.entities.emoji.CustomEmojiImpl;
 
 public class CommandMLB {
 
@@ -19,7 +15,7 @@ public class CommandMLB {
         // Gets user input from command - team name
         OptionMapping optionTeam = event.getOption("team");
         String teamName = optionTeam.getAsString();
-        System.out.println(userTag + " used command mlb for team: " + teamName);
+        System.out.println(userTag + " used command mlb for: " + teamName);
 
         // Capitalizes Team Name
         String initial = teamName.substring(0,1).toUpperCase();
@@ -42,6 +38,7 @@ public class CommandMLB {
 
 
                 // Creates Team and Opponents Emojis
+
                 String teamEmoji = MLB.getMLBTeamEmojis().get(teamName);
                 //Emoji emojiTeam = new CustomEmojiImpl(teamEmoji.substring(2, teamEmoji.indexOf(":")), Long.parseLong(teamEmoji.substring(teamEmoji.lastIndexOf(":"), teamEmoji.length()-1)), false);
 

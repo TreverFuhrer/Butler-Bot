@@ -1,7 +1,6 @@
 package com.toki.clever.commands;
 
-import com.toki.clever.commands.methods.CommandMLB;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
+import com.toki.clever.commands.methods.MLBCommand.CommandMLB;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

@@ -1,4 +1,4 @@
-package com.toki.clever.custom;
+package com.toki.clever.commands.methods.MLBCommand;
 
 import java.awt.*;
 import java.util.HashMap;
