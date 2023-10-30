@@ -1,6 +1,7 @@
 package com.toki.clever.events;
 
-import com.toki.clever.Day.DailyDM;
+import com.toki.clever.DirectMessaging.DailyDM;
+import com.toki.clever.webscraper.BunnyScraper;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -17,6 +18,8 @@ public class ReadyEventListener implements EventListener {
 
             JDA jda = event.getJDA();
             DailyDM.Daily(jda);
+
+            System.out.println(BunnyScraper.isNewUpload() ? "There is a new Upload" : "There is NOT a new upload");
 
 
             //MLBWebScraper.scrapeMLB("Braves");

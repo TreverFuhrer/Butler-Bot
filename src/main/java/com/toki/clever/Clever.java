@@ -1,6 +1,8 @@
 package com.toki.clever;
 
-import com.toki.clever.Day.DailyDM;
+import com.toki.clever.DirectMessaging.DailyDM;
+import com.toki.clever.DirectMessaging.HelpDM;
+import com.toki.clever.DirectMessaging.Modules.DailyWorkout;
 import com.toki.clever.commands.CommandManager;
 import com.toki.clever.events.MessageEventListener;
 import com.toki.clever.events.ReadyEventListener;
@@ -25,7 +27,7 @@ public class Clever {
         JDA jda = builder
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new ReadyEventListener(), new CommandManager(), new MessageEventListener(), new DailyDM())
+                .addEventListeners(new ReadyEventListener(), new CommandManager(), new MessageEventListener(), new DailyDM(), new HelpDM(), new DailyWorkout())
                 .build();
 
     }

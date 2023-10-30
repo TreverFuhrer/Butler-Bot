@@ -1,9 +1,11 @@
-package com.toki.clever.Day;
+package com.toki.clever.DirectMessaging;
 
+import com.toki.clever.webscraper.BunnyScraper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.json.JSONObject;
@@ -17,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DailyDM extends ListenerAdapter {
     public static void Daily(JDA jda) {
-        String filePath = "dailyUsers.json";
+        String filePath = "data/dailyUsers.json";
         JSONObject usersObj = DailyDM.loadUsers(filePath);
 
         Iterator<String> keys = usersObj.keys();
@@ -42,13 +44,40 @@ public class DailyDM extends ListenerAdapter {
             timer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
 
-                    EmbedBuilder embed = new EmbedBuilder();
-                    embed.setDescription("You Have an OPEN Channel");
+                    // Workout
+                    EmbedBuilder workoutEmbed = new EmbedBuilder();
+                    workoutEmbed.setDescription("This is the workout Embed!");
 
+                    // Main Message
+                    ArrayList<EmbedBuilder> embeds = new ArrayList<>();
+                    int startTime = 9, endTime = 15;
+                    for(int i = startTime; i <= endTime; i++){
+                        int time = (i>12) ? i-12 : i;
+                        String prefix = (i>12) ? "PM" : "AM";
+                        embeds.add(new EmbedBuilder().setDescription("**" + time + ":00" + prefix + " -: "));
+                    }
+
+                    // Upload Message
+                    boolean isNewUpload = BunnyScraper.isNewUpload();
+
+
+                    // Sends the messages
                     jda.retrieveUserById(ID).queue(user ->
-                            user.openPrivateChannel().queue(privateChannel ->
-                                    privateChannel.sendMessageEmbeds(embed.build()).queue()));
+                            user.openPrivateChannel().queue(privateChannel -> {
+                                this.sendMessage(privateChannel, workoutEmbed);
+                                for(EmbedBuilder embed : embeds) {
+                                    this.sendMessage(privateChannel, embed);
+                                }
+                                if(isNewUpload)
+                                    this.sendMessage(privateChannel, "Bunny Uploaded a new video!");
+                            }));
 
+                }
+                private void sendMessage(PrivateChannel privateChannel, EmbedBuilder embed){
+                    privateChannel.sendMessageEmbeds(embed.build()).queue();
+                }
+                private void sendMessage(PrivateChannel privateChannel, String message){
+                    privateChannel.sendMessage(message).queue();
                 }
             }, calendar.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
         }
@@ -66,7 +95,7 @@ public class DailyDM extends ListenerAdapter {
 
         System.out.println("Message: " + event.getMessage().getContentRaw());
 
-        String filePath = "dailyUsers.json";
+        String filePath = "data/dailyUsers.json";
         JSONObject usersObj = DailyDM.loadUsers(filePath);
 
         // Check if user exists
