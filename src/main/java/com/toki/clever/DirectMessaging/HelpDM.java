@@ -29,6 +29,8 @@ public class HelpDM extends ListenerAdapter {
         embed.setTitle("**Help**");
         embed.addField("Create Workout", "", true);
         embed.addField("Set Workout", "", true);
+        embed.addField("Play Game", "", true);
+        embed.addField("Mod Game", "", true);
 
         user.openPrivateChannel().queue(privateChannel ->
                 privateChannel.sendMessageEmbeds(embed.build()).queue());

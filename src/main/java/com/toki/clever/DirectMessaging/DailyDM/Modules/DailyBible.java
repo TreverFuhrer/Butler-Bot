@@ -1,4 +1,4 @@
-package com.toki.clever.DirectMessaging.Modules;
+package com.toki.clever.DirectMessaging.DailyDM.Modules;
 
 public class DailyBible {
 

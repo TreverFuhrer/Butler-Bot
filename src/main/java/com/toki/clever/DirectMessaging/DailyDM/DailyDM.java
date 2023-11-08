@@ -1,4 +1,4 @@
-package com.toki.clever.DirectMessaging;
+package com.toki.clever.DirectMessaging.DailyDM;
 
 import com.toki.clever.webscraper.BunnyScraper;
 import net.dv8tion.jda.api.EmbedBuilder;
