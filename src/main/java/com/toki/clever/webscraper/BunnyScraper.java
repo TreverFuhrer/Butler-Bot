@@ -15,11 +15,9 @@ public class BunnyScraper {
     public static boolean isNewUpload() {
         try {
             Document doc = Jsoup.connect("https://www.pornhub.com/model/bunnyortega/videos").get();
-            Element div = doc.getElementsByClass("showingInfo").get(0);
+            Element div = doc.getElementsByClass("videos row-5-thumbs").get(0);
 
-            String infoBar = div.text();
-            String uploadsText = infoBar.substring(infoBar.indexOf("f")+2);
-            int currentUploads = Integer.parseInt(uploadsText);
+            String currentVideoID = div.child(0).id();
 
             String filePath = "data/bunnyUploadCount.json";
             JSONObject usersObj = BunnyScraper.loadUsers(filePath);
@@ -27,11 +25,11 @@ public class BunnyScraper {
 
             // Compare old upload count to current count
             boolean isNewUpload = false;
-            if(usersObj.getInt("Uploads") == currentUploads) {
+            if(usersObj.getString("VideoID").equals(currentVideoID)) {
                 newSave = usersObj;
             }
             else {
-                newSave.put("Uploads", currentUploads);
+                newSave.put("VideoID", currentVideoID);
                 isNewUpload = true;
             }
 
@@ -58,7 +56,7 @@ public class BunnyScraper {
                 obj = new JSONObject(content);
             }
             else {
-                obj.put("Uploads", -1);
+                obj.put("VideoID", "ID");
             }
         } catch (IOException e) {
             System.out.println("An error occurred while reading the file: " + e.getMessage());

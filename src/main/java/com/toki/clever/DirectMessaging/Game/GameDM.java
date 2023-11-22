@@ -105,6 +105,7 @@ public class GameDM extends ListenerAdapter {
                         privateChannel.sendMessage("Stopping Game :)").queue());
                 userGame.stopGame();
                 this.games.remove(user);
+                this.states.replace(user,State.NONE);
                 System.out.println(user.getName() + " stopped their game");
                 return;
             }

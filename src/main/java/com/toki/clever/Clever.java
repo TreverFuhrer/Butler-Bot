@@ -4,6 +4,8 @@ import com.toki.clever.DirectMessaging.DailyDM.DailyDM;
 import com.toki.clever.DirectMessaging.Game.GameDM;
 import com.toki.clever.DirectMessaging.HelpDM;
 import com.toki.clever.DirectMessaging.DailyDM.Modules.DailyWorkout;
+import com.toki.clever.TheCafeServer.cafeMemberJoined;
+import com.toki.clever.TheCafeServer.roleCreator.roleChannel;
 import com.toki.clever.commands.CommandManager;
 import com.toki.clever.events.MessageEventListener;
 import com.toki.clever.events.ReadyEventListener;
@@ -24,12 +26,12 @@ public class Clever {
 
 
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
-        builder.setActivity(Activity.watching("Gay Porn"));
+        builder.setActivity(Activity.watching("Cat Videos"));
         JDA jda = builder
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(new ReadyEventListener(), new CommandManager(), new MessageEventListener(),
-                        new DailyDM(), new HelpDM(), new DailyWorkout(), new GameDM())
+                        new DailyDM(), new HelpDM(), new DailyWorkout(), new GameDM(), new roleChannel(), new cafeMemberJoined())
                 .build();
 
     }

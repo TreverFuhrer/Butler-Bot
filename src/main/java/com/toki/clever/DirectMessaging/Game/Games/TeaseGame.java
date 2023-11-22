@@ -27,13 +27,13 @@ public class TeaseGame extends Game {
 
     public void runGame() {
         super.sendMessage("**You can stop the game anytime\njust say stop**");
+        super.sendMessage(getEmoji());
         Tease teaseObj = new Tease(this.gender);
-        if(this.intensity.equals("high"))
-            this.eventHigh(teaseObj,1, "", 0);
-        else if(this.intensity.equals("medium"))
-            this.eventMed(0, teaseObj);
-        else
-            this.eventLow(0, teaseObj);
+        switch (this.intensity) {
+            case "high" -> this.event(teaseObj,1, "", 0, 1);
+            case "medium" -> this.event(teaseObj,1, "", 0, 2);
+            case "low" -> this.event(teaseObj,1, "", 0, 3);
+        }
     }
 
     public void stopGame() {
@@ -46,7 +46,7 @@ public class TeaseGame extends Game {
     public void genderInput(String gender) {
         this.gender = gender;
         super.sendMessage("Now what intensity? :candle:");
-        super.sendMessage("1. High - Nonstop\n2. Medium - Every 5-15 min\n3. Low - Every 10-60min");
+        super.sendMessage("1. High  [3-15 seconds]\n2. Medium  [5-15 min]\n3. Low  [10-60min]");
     }
 
     public void intensityInput(String intensity) {
@@ -55,12 +55,30 @@ public class TeaseGame extends Game {
     }
 
     // Events by Intensity
-    public void eventHigh(Tease teaseObj, int time, String setTease,  int set) {
+    public void event(Tease teaseObj, int time, String setTease,  int set, int intensity) {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 String tease = teaseObj.getTease();
-                int userTime = (int) (Math.random() * 13) + 3;
+                int userTime = 2;
+                int displayTime = 2;
+                switch (intensity) {
+                    case 1 -> {
+                        userTime = (int) (Math.random() * 13) + 3;
+                        displayTime = userTime;
+                    }
+                    case 2 -> { // 5-15 min in milliseconds   15 min    5 min            5 min
+                        userTime = (int) (Math.random() * ((15 * 60) - (5 * 60 + 1))) + (5 * 60);
+                        displayTime = (int) (Math.random() * 15) + 15;
+                        tease = teaseObj.getSenGenderTease();
+                    }
+                    case 3 -> { // 10-60 min in milliseconds  60 min    10 min            10 min
+                        userTime = (int) (Math.random() * ((60 * 60) - (10 * 60 + 1))) + (10 * 60);
+                        displayTime = (int) (Math.random() * 13) + 3;
+                        tease = teaseObj.getSenGenderTease();
+                    }
+
+                }
 
                 int newSet = set;
                 String thisSetTease = "";
@@ -86,20 +104,13 @@ public class TeaseGame extends Game {
                     }
                 }
                 String timeEmoji = (userTime > 8) ? ":hourglass_flowing_sand:" : ":hourglass:";
-                sendMessage(getEmoji());
-                sendMessage(tease + " **[" + userTime + " sec]** " + timeEmoji);
-                eventHigh(teaseObj, userTime + 1, thisSetTease, newSet);
+
+                sendMessage("-" + tease + "\n.     .     .     .     .\n" + getEmoji() + " **[" + displayTime + " sec]** " + timeEmoji + "\n.     .     .     .     .");
+                event(teaseObj, userTime + 1, thisSetTease, newSet, intensity);
             }
         };
+
         this.timer.schedule(task, time* 1000L);
-    }
-
-    public void eventMed(int time, Tease teaseObj) {
-        super.sendMessage("**You chose:** " + teaseObj.getTease());
-    }
-
-    public void eventLow(int time, Tease teaseObj) {
-        super.sendMessage("**You chose:** " + teaseObj.getTease());
     }
 
     public String getEmoji() {
