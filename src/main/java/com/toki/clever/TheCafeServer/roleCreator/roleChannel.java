@@ -5,10 +5,13 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateFeaturesEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.awt.*;
@@ -19,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class roleChannel extends ListenerAdapter {
 
@@ -84,6 +88,52 @@ public class roleChannel extends ListenerAdapter {
         this.saveUserRole(newSave);
     }
 
+    @Override
+    public void onUserUpdateName(UserUpdateNameEvent event) {
+        JSONObject newSave = this.loadUserRole();
+        String oldName = event.getOldName();
+        String newName = event.getNewName();
+        String roleName;
+        try {
+            roleName = newSave.getString(oldName);
+        }
+        catch (org.json.JSONException e) {
+            return;
+        }
+        newSave.remove(oldName);
+        newSave.put(newName, roleName);
+    }
+
+    @Override
+    public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
+        String mention;
+        try {
+            mention = Objects.requireNonNull(event.getMember()).getAsMention();
+        }
+        catch(Exception e) {
+            mention = Objects.requireNonNull(event.getMember()).getEffectiveName();
+        }
+        if(event.getComponentId().equals("button_name"))
+        {
+            event.reply(mention + " Type your new role name :kissing_heart:" +
+                    "\nType cancel to prevent name change").setEphemeral(true).queue();
+            this.states.replace(event.getUser(), State.EDIT_NAME);
+        }
+        else if(event.getComponentId().equals("button_color"))
+        {
+            event.reply(mention + " Type your new role color :smiling_face_with_3_hearts:" +
+                    "\nType **cancel** to prevent color change" +
+                    "\n:art: Type like the bold" +
+                    "\nColor: **Red** Hex: **#FFD700** RGB: **255,182,193**").setEphemeral(true).queue();
+            this.states.replace(event.getUser(), State.EDIT_COLOR);
+        }
+        else if(event.getComponentId().equals("button_delete"))
+        {
+            this.deleteRole(event.getGuild(), event.getMember());
+            event.reply(mention + ", Your role has been deleted. :face_with_peeking_eye:" +
+                    "\nType role to create a new one anytime").setEphemeral(true).queue();
+        }
+    }
 
     private void noState(Guild guild, Member member, TextChannel channel, String message)
     {
@@ -132,31 +182,6 @@ public class roleChannel extends ListenerAdapter {
             if(notifCount == 0)
                 channel.sendMessage(member.getAsMention() + ", For your role, say role").queue();
             notifCount++;
-        }
-    }
-
-    @Override
-    public void onButtonInteraction(ButtonInteractionEvent event) {
-        if(event.getComponentId().equals("button_name"))
-        {
-            event.reply(event.getMember().getAsMention() +
-                    " Type your new role name :kissing_heart:\nType cancel to prevent name change").setEphemeral(true).queue();
-            this.states.replace(event.getUser(), State.EDIT_NAME);
-        }
-        else if(event.getComponentId().equals("button_color"))
-        {
-            event.reply(event.getMember().getAsMention() +
-                    " Type your new role color :smiling_face_with_3_hearts:\nType **cancel** to prevent color change" +
-                    "\n:art: Type like the bold" +
-                            "\nColor: **Red** Hex: **#FFD700** RGB: **255,182,193**").setEphemeral(true).queue();
-            this.states.replace(event.getUser(), State.EDIT_COLOR);
-        }
-        else if(event.getComponentId().equals("button_delete"))
-        {
-            this.deleteRole(event.getGuild(), event.getMember());
-            event.reply(event.getMember().getAsMention() +
-                    ", Your role has been deleted. :face_with_peeking_eye:\n" +
-                    "Type role to create a new one anytime").setEphemeral(true).queue();
         }
     }
 
