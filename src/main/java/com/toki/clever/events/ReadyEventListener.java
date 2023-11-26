@@ -1,6 +1,6 @@
 package com.toki.clever.events;
 
-import com.toki.clever.DirectMessaging.DailyDM.DailyDM;
+import com.toki.clever.LLover.WakeUpDM.DailyDM;
 import com.toki.clever.webscraper.BunnyScraper;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.GenericEvent;

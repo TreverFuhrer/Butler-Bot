@@ -1,4 +1,4 @@
-package com.toki.clever.DirectMessaging.DailyDM.Modules;
+package com.toki.clever.LLover.WakeUpDM.Modules;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;

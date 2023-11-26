@@ -1,4 +1,4 @@
-package com.toki.clever.DirectMessaging.DailyDM.Modules;
+package com.toki.clever.LLover.WakeUpDM.Modules;
 
 public class DailyWeather {
 

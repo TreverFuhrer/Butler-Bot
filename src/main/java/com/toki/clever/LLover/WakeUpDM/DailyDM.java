@@ -1,4 +1,4 @@
-package com.toki.clever.DirectMessaging.DailyDM;
+package com.toki.clever.LLover.WakeUpDM;
 
 import com.toki.clever.webscraper.BunnyScraper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -64,10 +64,11 @@ public class DailyDM extends ListenerAdapter {
                     // Sends the messages
                     jda.retrieveUserById(ID).queue(user ->
                             user.openPrivateChannel().queue(privateChannel -> {
-                                this.sendMessage(privateChannel, workoutEmbed);
-                                for(EmbedBuilder embed : embeds) {
-                                    this.sendMessage(privateChannel, embed);
-                                }
+                                //this.sendMessage(privateChannel, workoutEmbed);
+                                //for(EmbedBuilder embed : embeds) {
+                                //    this.sendMessage(privateChannel, embed);
+                                //}
+                                this.sendMessage(privateChannel, "Good morning master :3");
                                 if(isNewUpload)
                                     this.sendMessage(privateChannel, "Bunny Uploaded a new video!");
                             }));

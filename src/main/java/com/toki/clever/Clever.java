@@ -1,9 +1,11 @@
 package com.toki.clever;
 
-import com.toki.clever.DirectMessaging.DailyDM.DailyDM;
+import com.toki.clever.LLover.Commands.Commands;
+import com.toki.clever.LLover.Interactions.Interactions;
+import com.toki.clever.LLover.WakeUpDM.DailyDM;
 import com.toki.clever.DirectMessaging.Game.GameDM;
 import com.toki.clever.DirectMessaging.HelpDM;
-import com.toki.clever.DirectMessaging.DailyDM.Modules.DailyWorkout;
+import com.toki.clever.LLover.WakeUpDM.Modules.DailyWorkout;
 import com.toki.clever.TheCafeServer.cafeMemberJoined;
 import com.toki.clever.TheCafeServer.roleCreator.roleChannel;
 import com.toki.clever.commands.CommandManager;
@@ -31,7 +33,8 @@ public class Clever {
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(new ReadyEventListener(), new CommandManager(), new MessageEventListener(),
-                        new DailyDM(), new HelpDM(), new DailyWorkout(), new GameDM(), new roleChannel(), new cafeMemberJoined())
+                        new DailyDM(), new HelpDM(), new DailyWorkout(), new GameDM(), new roleChannel(), new cafeMemberJoined(),
+                        new Commands(), new Interactions())
                 .build();
 
     }

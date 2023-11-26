@@ -3,9 +3,9 @@ package com.toki.clever.TheCafeServer.roleCreator;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.Channel;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
-import net.dv8tion.jda.api.events.guild.update.GuildUpdateFeaturesEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
@@ -41,7 +41,7 @@ public class roleChannel extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-
+        if(event.isFromType(ChannelType.PRIVATE)) return;
         Channel channel = event.getChannel();
         TextChannel textChannel = event.getChannel().asTextChannel();
         if(!channel.getId().equals("1175605228863766558"))
