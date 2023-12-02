@@ -3,6 +3,7 @@ package com.toki.clever.DirectMessaging.Game;
 import com.toki.clever.DirectMessaging.Game.Games.Tease;
 import com.toki.clever.DirectMessaging.Game.Games.TeaseGame;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -19,8 +20,8 @@ public class GameDM extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event)
     {
         String message = event.getMessage().getContentRaw();
+        if(!event.isFromType(ChannelType.PRIVATE)) return;
         User user = event.getAuthor();
-
         if(user.isBot()) return;
 
         this.states.putIfAbsent(user, State.NONE);

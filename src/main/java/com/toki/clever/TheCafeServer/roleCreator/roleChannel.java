@@ -179,8 +179,13 @@ public class roleChannel extends ListenerAdapter {
                 this.notifCount = 0;
                 return;
             }
-            if(notifCount == 0)
-                channel.sendMessage(member.getAsMention() + ", For your role, say role").queue();
+            JSONObject roleObj = this.loadUserRole();
+            if(notifCount == 0) {
+                if(this.getRole(guild, member, roleObj) != null)
+                    channel.sendMessage(member.getAsMention() + ", To edit your role, say role").queue();
+                else
+                    channel.sendMessage(member.getAsMention() + ", For your role, say role").queue();
+            }
             notifCount++;
         }
     }
@@ -193,7 +198,7 @@ public class roleChannel extends ListenerAdapter {
         }
         channel.sendMessage(member.getAsMention() +
                 ", Your roles name is: \"" + message + "\"" +
-                "\n:art: Type like the bold **Your roles color?**" +
+                "\n:art: **Choose a role color!** Any Color :)" +
                 "\nColor: **Green** Hex: **#87CEEB** RGB: **114,137,218**").queue();
         this.roleNames.put(member,message);
         this.states.replace(member.getUser(), State.ROLE_COLOR);
@@ -371,6 +376,96 @@ public class roleChannel extends ListenerAdapter {
             case "dark gray": return Color.DARK_GRAY;
             case "blurple": return new Color(114, 137, 218);
             case "grayple": return new Color(153, 170, 181);
+            case "violet": return new Color(148, 0, 211);
+            case "light violet": return new Color(199, 21, 133);
+            case "dark violet": return new Color(93, 51, 93);
+            case "indigo": return new Color(75, 0, 130);
+            case "light indigo": return new Color(111, 0, 255);
+            case "dark indigo": return new Color(49, 0, 98);
+            case "lime": return new Color(0, 255, 0);
+            case "light lime": return new Color(204, 255, 0);
+            case "dark lime": return new Color(51, 204, 0);
+            case "maroon": return new Color(128, 0, 0);
+            case "light maroon": return new Color(195, 33, 72);
+            case "dark maroon": return new Color(88, 0, 0);
+            case "beige": return new Color(245, 245, 220);
+            case "light beige": return new Color(255, 250, 205);
+            case "dark beige": return new Color(210, 180, 140);
+            case "turquoise": return new Color(64, 224, 208);
+            case "light turquoise": return new Color(175, 238, 238);
+            case "dark turquoise": return new Color(0, 206, 209);
+            case "coral": return new Color(255, 127, 80);
+            case "light coral": return new Color(240, 128, 128);
+            case "dark coral": return new Color(205, 91, 69);
+            case "gold": return new Color(255, 215, 0);
+            case "light gold": return new Color(250, 250, 210);
+            case "dark gold": return new Color(218, 165, 32);
+            case "mint": return new Color(189, 252, 201);
+            case "light mint": return new Color(245, 255, 250);
+            case "dark mint": return new Color(32, 178, 170);
+            case "olive": return new Color(128, 128, 0);
+            case "light olive": return new Color(173, 255, 47);
+            case "dark olive": return new Color(85, 107, 47);
+            case "sage green": return new Color(188, 236, 172);
+            case "light sage green": return new Color(207, 239, 193);
+            case "dark sage green": return new Color(156, 197, 141);
+            case "rose gold": return new Color(183, 110, 121);
+            case "light rose gold": return new Color(231, 172, 172);
+            case "dark rose gold": return new Color(152, 89, 96);
+            case "charcoal": return new Color(54, 69, 79);
+            case "light charcoal": return new Color(112, 123, 130);
+            case "dark charcoal": return new Color(34, 40, 49);
+            case "aubergine": return new Color(61, 48, 84);
+            case "light aubergine": return new Color(104, 85, 144);
+            case "dark aubergine": return new Color(48, 37, 65);
+            case "peach": return new Color(255, 229, 180);
+            case "light peach": return new Color(255, 239, 213);
+            case "dark peach": return new Color(255, 218, 185);
+            case "lavender": return new Color(230, 230, 250);
+            case "light lavender": return new Color(237, 237, 255);
+            case "dark lavender": return new Color(150, 123, 182);
+            case "mustard": return new Color(255, 219, 88);
+            case "light mustard": return new Color(255, 239, 161);
+            case "dark mustard": return new Color(204, 174, 68);
+            case "teal blue": return new Color(54, 117, 136);
+            case "light teal blue": return new Color(144, 195, 212);
+            case "dark teal blue": return new Color(0, 77, 82);
+            case "cerulean": return new Color(42, 82, 190);
+            case "light cerulean": return new Color(155, 196, 226);
+            case "dark cerulean": return new Color(0, 51, 102);
+            case "salmon": return new Color(250, 128, 114);
+            case "light salmon": return new Color(255, 160, 122);
+            case "dark salmon": return new Color(233, 150, 122);
+            case "navy": return new Color(0, 0, 128);
+            case "light navy": return new Color(0, 0, 205);
+            case "dark navy": return new Color(0, 0, 78);
+            case "navy blue": return new Color(0, 0, 128);
+            case "light navy blue": return new Color(0, 0, 205);
+            case "dark navy blue": return new Color(0, 0, 78);
+            case "chartreuse": return new Color(127, 255, 0);
+            case "light chartreuse": return new Color(223, 255, 0);
+            case "dark chartreuse": return new Color(87, 138, 52);
+            case "amber": return new Color(255, 191, 0);
+            case "light amber": return new Color(255, 204, 79);
+            case "dark amber": return new Color(204, 133, 0);
+            case "emerald": return new Color(80, 200, 120);
+            case "light emerald": return new Color(146, 223, 173);
+            case "dark emerald": return new Color(4, 99, 7);
+            case "ivory": return new Color(255, 255, 240);
+            case "light ivory": return new Color(255, 255, 224);
+            case "dark ivory": return new Color(238, 238, 224);
+            case "plum": return new Color(221, 160, 221);
+            case "light plum": return new Color(238, 187, 238);
+            case "dark plum": return new Color(142, 69, 133);
+            case "sienna": return new Color(160, 82, 45);
+            case "light sienna": return new Color(203, 133, 63);
+            case "dark sienna": return new Color(136, 45, 23);
+            case "fuchsia": return new Color(255, 0, 255);
+            case "light fuchsia": return new Color(255, 119, 255);
+            case "dark fuchsia": return new Color(139, 0, 139);
+            case "silver": return new Color(192, 192, 192);
+            case "light silver": return new Color(211, 211, 211);
+            case "dark silver": return new Color(169, 169, 169);
         }
 
         String[] rgbComponents = message.split(",");
