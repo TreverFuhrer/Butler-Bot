@@ -1,4 +1,4 @@
-package com.toki.clever.LLover.LivingGirl.Systems;
+package com.toki.clever.LLover.LivingGirl.Stats;
 
 public class Health {
 

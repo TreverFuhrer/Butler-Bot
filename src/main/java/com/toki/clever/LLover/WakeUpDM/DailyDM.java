@@ -1,5 +1,6 @@
 package com.toki.clever.LLover.WakeUpDM;
 
+import com.toki.clever.Clever;
 import com.toki.clever.webscraper.BunnyScraper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -18,15 +19,16 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class DailyDM extends ListenerAdapter {
-    public static void Daily(JDA jda) {
-        String filePath = "data/dailyUsers.json";
-        JSONObject usersObj = DailyDM.loadUsers(filePath);
 
+    public DailyDM(JDA jda)
+    {
+        JSONObject usersObj = this.loadUsers();
         Iterator<String> keys = usersObj.keys();
         if(!keys.hasNext()) {
             System.out.println("No Users.");
             return;
         }
+
         while(keys.hasNext()) {
             String key = keys.next();
             String ID = usersObj.getString(key);
@@ -97,7 +99,7 @@ public class DailyDM extends ListenerAdapter {
         System.out.println("Message: " + event.getMessage().getContentRaw());
 
         String filePath = "data/dailyUsers.json";
-        JSONObject usersObj = DailyDM.loadUsers(filePath);
+        JSONObject usersObj = this.loadUsers();
 
         // Check if user exists
         boolean userExists = usersObj.keys().hasNext();
@@ -118,11 +120,12 @@ public class DailyDM extends ListenerAdapter {
                     privateChannel.sendMessage("Daily Message Started.").queue());
         }
         JDA jda = event.getJDA();
-        DailyDM.Daily(jda);
+        new DailyDM(jda);
     }
 
-    private static JSONObject loadUsers(String filePath) {
+    private JSONObject loadUsers() {
         JSONObject obj = new JSONObject();
+        String filePath = "data/dailyUsers.json";
         Path path = Paths.get(filePath);
         try {
             if (Files.size(path) > 0) {

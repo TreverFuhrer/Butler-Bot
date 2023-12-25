@@ -16,9 +16,6 @@ public class ReadyEventListener implements EventListener {
         if (event instanceof ReadyEvent) {
             System.out.println("Im here to help Master!");
 
-            JDA jda = event.getJDA();
-            DailyDM.Daily(jda);
-
             System.out.println(BunnyScraper.isNewUpload() ? "There is a new Upload" : "There is NOT a new upload");
 
 

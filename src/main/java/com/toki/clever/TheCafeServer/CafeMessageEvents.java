@@ -12,11 +12,21 @@ public class CafeMessageEvents extends ListenerAdapter {
         if (user.isBot()) return;
 
         String message = event.getMessage().getContentRaw().toLowerCase();
-        if (message.matches(".*(hi llover|hello llover|howdy llover|hey llover|ello llover|helo llover).*")) {
-            String[] greetings = {"hello", "hi", "hey", "howdy"};
-            int index = (int)(Math.random()*3)+1;
-            event.getChannel().sendMessage(greetings[index] + " " + user.getEffectiveName()).queue();
+        String[] greetings = {"hello", "hi", "hey", "howdy", "ello"};
+        if (message.matches(".*(hi llover|hello llover|howdy llover|hey llover|ello llover|helo llover).*"))
+            this.sendMessage(event, greetings, user);
+        else if(message.contains(event.getJDA().getSelfUser().getAsMention())) {
+            for(String greet : greetings) {
+                if(message.contains(greet)) {
+                    this.sendMessage(event, greetings, user);
+                    return;
+                }
+            }
         }
+    }
 
+    public void sendMessage(MessageReceivedEvent event, String[] greetings, User user) {
+        int index = (int)(Math.random()*3)+1;
+        event.getChannel().sendMessage(greetings[index] + " " + user.getEffectiveName()).queue();
     }
 }

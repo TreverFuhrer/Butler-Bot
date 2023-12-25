@@ -1,6 +1,13 @@
 package com.toki.clever.commands;
 
+import com.toki.clever.Casino.Commands.Brokie;
+import com.toki.clever.Casino.Commands.Games.Cointoss;
+import com.toki.clever.Casino.Commands.Games.Connect4;
+import com.toki.clever.Casino.Commands.Games.PlayerRace;
+import com.toki.clever.Casino.Commands.Profile;
+import com.toki.clever.Casino.Commands.Games.Slots;
 import com.toki.clever.commands.methods.MLBCommand.CommandMLB;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -16,9 +23,10 @@ import java.util.List;
 public class CommandManager extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-
+        User user = event.getUser();
         String command = event.getName();
-        String userTag = event.getUser().getAsTag();
+        String userTag = user.getAsTag();
+
 
         if (command.equals("help"))
         {
@@ -40,6 +48,30 @@ public class CommandManager extends ListenerAdapter {
         {
             CommandMLB.MLB(event, userTag);
         }
+        else if(command.equals("slots"))
+        {
+            Slots.slotsCommand(event, user);
+        }
+        else if(command.equals("cointoss"))
+        {
+            Cointoss.coinCommand(event, user);
+        }
+        else if(command.equals("profile"))
+        {
+            Profile.profileCommand(event, user);
+        }
+        else if(command.equals("brokie"))
+        {
+            Brokie.brokieCommand(event, user);
+        }
+        else if(command.equals("connect4"))
+        {
+            Connect4.connect4Command(event, user);
+        }
+        else if(command.equals("racepvp"))
+        {
+            PlayerRace.playerRaceCommand(event, user);
+        }
     }
     @Override
     public void onGuildReady(GuildReadyEvent event) {
@@ -50,6 +82,28 @@ public class CommandManager extends ListenerAdapter {
         //   /MLB
         OptionData teamName = new OptionData(OptionType.STRING, "team", "Name of team. Ex. Braves Ex. brewers", true);
         commandData.add(Commands.slash("mlb", "Get Live MLB Data On Any Team!").addOptions(teamName));
+
+// Casino
+
+        //   /profile
+        commandData.add(Commands.slash("profile", "You're profile!"));
+        //   /brokie
+        commandData.add(Commands.slash("brokie", "If you have $0, get money here!"));
+// Games
+        //   /Slots
+        OptionData slotsBet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
+        commandData.add(Commands.slash("slots", "Start a game of slots!").addOptions(slotsBet));
+        //   /cointoss
+        OptionData coinBet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
+        commandData.add(Commands.slash("cointoss", "Start a game of coin toss!").addOptions(coinBet));
+        //   /connect4
+        OptionData c4Bet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
+        commandData.add(Commands.slash("connect4", "Start a game of connect4!").addOptions(c4Bet));
+        //   /racepvp
+        OptionData racepvpBet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
+        OptionData racepvpType = new OptionData(OptionType.STRING, "type", "Type of race you wanna play", true)
+                .addChoice("Car", "car").addChoice("Bike", "bike").addChoice("Horse", "horse");
+        commandData.add(Commands.slash("racepvp", "Race another player!").addOptions(racepvpBet).addOptions(racepvpType));
 
         event.getGuild().updateCommands().addCommands(commandData).queue();
     }
