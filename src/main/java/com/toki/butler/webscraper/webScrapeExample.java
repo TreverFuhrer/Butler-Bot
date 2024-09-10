@@ -1,4 +1,4 @@
-package com.toki.clever.webscraper;
+package com.toki.butler.webscraper;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class BunnyScraper {
+public class webScrapeExample {
     public static boolean isNewUpload() {
         try {
             Document doc = Jsoup.connect("https://www.pornhub.com/model/bunnyortega/videos").get();
@@ -20,7 +20,7 @@ public class BunnyScraper {
             String currentVideoID = div.child(0).id();
 
             String filePath = "data/bunnyUploadCount.json";
-            JSONObject usersObj = BunnyScraper.loadUsers(filePath);
+            JSONObject usersObj = webScrapeExample.loadUsers(filePath);
             JSONObject newSave = new JSONObject();
 
             // Compare old upload count to current count

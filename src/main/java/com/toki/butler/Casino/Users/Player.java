@@ -1,10 +1,7 @@
-package com.toki.clever.Casino.Users;
+package com.toki.butler.Casino.Users;
 
-import com.toki.clever.Casino.Casino;
-import com.toki.clever.webscraper.BunnyScraper;
 import org.json.JSONObject;
 
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

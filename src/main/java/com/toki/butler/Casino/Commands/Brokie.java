@@ -1,7 +1,7 @@
-package com.toki.clever.Casino.Commands;
+package com.toki.butler.Casino.Commands;
 
-import com.toki.clever.Casino.Casino;
-import com.toki.clever.Casino.Users.Player;
+import com.toki.butler.Casino.Casino;
+import com.toki.butler.Casino.Users.Player;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 

@@ -1,12 +1,11 @@
-package com.toki.clever.commands;
+package com.toki.butler;
 
-import com.toki.clever.Casino.Commands.Brokie;
-import com.toki.clever.Casino.Commands.Games.Cointoss;
-import com.toki.clever.Casino.Commands.Games.Connect4;
-import com.toki.clever.Casino.Commands.Games.PlayerRace;
-import com.toki.clever.Casino.Commands.Profile;
-import com.toki.clever.Casino.Commands.Games.Slots;
-import com.toki.clever.commands.methods.MLBCommand.CommandMLB;
+import com.toki.butler.Casino.Commands.Brokie;
+import com.toki.butler.Casino.Commands.Games.Cointoss;
+import com.toki.butler.Casino.Commands.Games.Connect4;
+import com.toki.butler.Casino.Commands.Games.PlayerRace;
+import com.toki.butler.Casino.Commands.Profile;
+import com.toki.butler.Casino.Commands.Games.Slots;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -44,10 +43,6 @@ public class CommandManager extends ListenerAdapter {
                         + "... Ummmm, who the fuck are you?").queue();
             }
         }
-        else if(command.equals("mlb"))
-        {
-            CommandMLB.MLB(event, userTag);
-        }
         else if(command.equals("slots"))
         {
             Slots.slotsCommand(event, user);
@@ -76,20 +71,16 @@ public class CommandManager extends ListenerAdapter {
     @Override
     public void onGuildReady(GuildReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
+// General
         //   /help
         commandData.add(Commands.slash("help", "Tells you all that you need to know :3"));
 
-        //   /MLB
-        OptionData teamName = new OptionData(OptionType.STRING, "team", "Name of team. Ex. Braves Ex. brewers", true);
-        commandData.add(Commands.slash("mlb", "Get Live MLB Data On Any Team!").addOptions(teamName));
-
 // Casino
-
         //   /profile
         commandData.add(Commands.slash("profile", "You're profile!"));
         //   /brokie
         commandData.add(Commands.slash("brokie", "If you have $0, get money here!"));
-// Games
+    // Games
         //   /Slots
         OptionData slotsBet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
         commandData.add(Commands.slash("slots", "Start a game of slots!").addOptions(slotsBet));

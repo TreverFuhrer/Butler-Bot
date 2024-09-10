@@ -1,9 +1,8 @@
-package com.toki.clever.Casino.Commands.Games;
+package com.toki.butler.Casino.Commands.Games;
 
-import com.toki.clever.Casino.Casino;
-import com.toki.clever.Casino.Users.Player;
+import com.toki.butler.Casino.Casino;
+import com.toki.butler.Casino.Users.Player;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -13,7 +12,6 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
 public class PlayerRace extends ListenerAdapter {
     public static void playerRaceCommand(SlashCommandInteractionEvent event, User user)

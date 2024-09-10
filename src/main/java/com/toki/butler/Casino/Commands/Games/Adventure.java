@@ -1,4 +1,4 @@
-package com.toki.clever.Casino.Commands.Games;
+package com.toki.butler.Casino.Commands.Games;
 
 public class Adventure {
 

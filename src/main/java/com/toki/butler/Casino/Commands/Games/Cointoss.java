@@ -1,7 +1,7 @@
-package com.toki.clever.Casino.Commands.Games;
+package com.toki.butler.Casino.Commands.Games;
 
-import com.toki.clever.Casino.Casino;
-import com.toki.clever.Casino.Users.Player;
+import com.toki.butler.Casino.Casino;
+import com.toki.butler.Casino.Users.Player;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -10,10 +10,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Slots {
-
+public class Cointoss {
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    public static void slotsCommand(SlashCommandInteractionEvent event, User user) {
+    public static void coinCommand(SlashCommandInteractionEvent event, User user) {
         // Gets user input from command - team name
         OptionMapping optionBet = event.getOption("bet");
         double bet;

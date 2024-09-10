@@ -1,12 +1,9 @@
-package com.toki.clever.Casino;
+package com.toki.butler.Casino;
 
-import com.toki.clever.Casino.Users.Player;
-import net.dv8tion.jda.api.JDA;
+import com.toki.butler.Casino.Users.Player;
 import net.dv8tion.jda.api.entities.User;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
