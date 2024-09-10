@@ -26,76 +26,58 @@ public class CommandManager extends ListenerAdapter {
         String command = event.getName();
         String userTag = user.getAsTag();
 
-
-        if (command.equals("help"))
-        {
-            System.out.println("USER TAG: " + userTag);
-
-            if (userTag.equals("Toki#1111"))
-            {
-                event.reply("Hello Master!").queue();
+        switch (command) {
+            // General
+            case "help" -> {
+                System.out.println("USER TAG: " + userTag);
+                if (userTag.equals("Toki#1111")) {
+                    event.reply("Hello Master!").queue();
+                } else {
+                    event.reply("Hi "
+                            + userTag.toLowerCase().charAt(0)
+                            + userTag.substring(1, userTag.indexOf("#"))
+                            + "... Ummmm, who the fuck are you?").queue();
+                }
             }
-            else
-            {
-                event.reply("Hi "
-                        + userTag.toLowerCase().charAt(0)
-                        + userTag.substring(1, userTag.indexOf("#"))
-                        + "... Ummmm, who the fuck are you?").queue();
-            }
-        }
-        else if(command.equals("slots"))
-        {
-            Slots.slotsCommand(event, user);
-        }
-        else if(command.equals("cointoss"))
-        {
-            Cointoss.coinCommand(event, user);
-        }
-        else if(command.equals("profile"))
-        {
-            Profile.profileCommand(event, user);
-        }
-        else if(command.equals("brokie"))
-        {
-            Brokie.brokieCommand(event, user);
-        }
-        else if(command.equals("connect4"))
-        {
-            Connect4.connect4Command(event, user);
-        }
-        else if(command.equals("racepvp"))
-        {
-            PlayerRace.playerRaceCommand(event, user);
+
+            // Casino
+            case "slots" -> Slots.slotsCommand(event, user);
+            case "cointoss" -> Cointoss.coinCommand(event, user);
+            case "profile" -> Profile.profileCommand(event, user);
+            case "brokie" -> Brokie.brokieCommand(event, user);
+            case "connect4" -> Connect4.connect4Command(event, user);
+            case "racepvp" -> PlayerRace.playerRaceCommand(event, user);
         }
     }
     @Override
     public void onGuildReady(GuildReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
 // General
-        //   /help
+//      /help
         commandData.add(Commands.slash("help", "Tells you all that you need to know :3"));
 
 // Casino
-        //   /profile
+//      /profile
         commandData.add(Commands.slash("profile", "You're profile!"));
-        //   /brokie
+//      /brokie
         commandData.add(Commands.slash("brokie", "If you have $0, get money here!"));
-    // Games
-        //   /Slots
+// -Games
+//      /Slots
         OptionData slotsBet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
         commandData.add(Commands.slash("slots", "Start a game of slots!").addOptions(slotsBet));
-        //   /cointoss
+//      /cointoss
         OptionData coinBet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
         commandData.add(Commands.slash("cointoss", "Start a game of coin toss!").addOptions(coinBet));
-        //   /connect4
+//      /connect4
         OptionData c4Bet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
         commandData.add(Commands.slash("connect4", "Start a game of connect4!").addOptions(c4Bet));
-        //   /racepvp
+//      /racepvp
         OptionData racepvpBet = new OptionData(OptionType.NUMBER, "bet", "Amount of cash to bet", true);
         OptionData racepvpType = new OptionData(OptionType.STRING, "type", "Type of race you wanna play", true)
                 .addChoice("Car", "car").addChoice("Bike", "bike").addChoice("Horse", "horse");
         commandData.add(Commands.slash("racepvp", "Race another player!").addOptions(racepvpBet).addOptions(racepvpType));
 
+// Add Commands
         event.getGuild().updateCommands().addCommands(commandData).queue();
     }
 }

@@ -4,5 +4,5 @@ public class Adventure {
 
 
     //Procegerial generated game with tressure chests for cash and stuff
-    // 1-3 players
+    // 1Adventure-3 players
 }

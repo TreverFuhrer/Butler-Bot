@@ -53,8 +53,7 @@ public class Player {
      * Methods
      */
     public boolean checkUsedBrokieCmd() {
-        if(this.usedBrokieCmd == null)
-            return false;
+        if(this.usedBrokieCmd == null) return false;
         return this.usedBrokieCmd.equals(LocalDate.now());
     }
     public void setUsedBrokieCmdToday() {
