@@ -11,7 +11,7 @@ public class ReadyEventListener implements EventListener {
     public void onEvent(@NotNull GenericEvent event)
     {
         if (event instanceof ReadyEvent) {
-            System.out.println("I am ready for your command.");
+            System.out.println("I am at your service. What will be my order.");
         }
     }
 }

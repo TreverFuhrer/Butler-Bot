@@ -31,7 +31,7 @@ public class Connect4 extends ListenerAdapter {
 
         // Check if player can bet
         Player player = Casino.getPlayer(user);
-        if(bet > player.getCash()) {
+        if(player.checkBet(bet)) {
             event.reply("You don't have enough to bet that much").setEphemeral(true).queue();
             return;
         }

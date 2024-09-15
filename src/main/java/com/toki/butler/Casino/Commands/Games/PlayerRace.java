@@ -69,10 +69,10 @@ public class PlayerRace extends ListenerAdapter {
             String type = id.substring(id.indexOf(':')+1);
 
             // Check if same player
-            if(user1.equals(user2)) {
-                event.reply("You cant race yourself :grimacing:").setEphemeral(true).queue();
-                return;
-            }
+            //if(user1.equals(user2)) {
+            //    event.reply("You cant race yourself :grimacing:").setEphemeral(true).queue();
+            //    return;
+            //}
 
             // Check if player can bet
             Player player1 = Casino.getPlayer(user1);

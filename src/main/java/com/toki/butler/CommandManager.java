@@ -1,7 +1,7 @@
 package com.toki.butler;
 
 import com.toki.butler.Casino.Commands.Brokie;
-import com.toki.butler.Casino.Commands.Games.Cointoss;
+import com.toki.butler.Casino.Commands.Games.CoinToss;
 import com.toki.butler.Casino.Commands.Games.Connect4;
 import com.toki.butler.Casino.Commands.Games.PlayerRace;
 import com.toki.butler.Casino.Commands.Profile;
@@ -42,7 +42,7 @@ public class CommandManager extends ListenerAdapter {
 
             // Casino
             case "slots" -> Slots.slotsCommand(event, user);
-            case "cointoss" -> Cointoss.coinCommand(event, user);
+            case "cointoss" -> CoinToss.coinCommand(event, user);
             case "profile" -> Profile.profileCommand(event, user);
             case "brokie" -> Brokie.brokieCommand(event, user);
             case "connect4" -> Connect4.connect4Command(event, user);
