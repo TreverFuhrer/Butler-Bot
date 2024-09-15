@@ -60,6 +60,10 @@ public class Player {
         this.usedBrokieCmd = LocalDate.now();
     }
 
+    public boolean checkBet(double bet) {
+        return bet < this.getCash();
+    }
+
     /*
      * JSON
      */

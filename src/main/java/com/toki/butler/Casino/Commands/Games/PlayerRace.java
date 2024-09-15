@@ -29,7 +29,7 @@ public class PlayerRace extends ListenerAdapter {
 
         // Check if player can bet
         Player player = Casino.getPlayer(user);
-        if(bet > player.getCash()) {
+        if(player.checkBet(bet)) {
             event.reply("You don't have enough to bet that much").setEphemeral(true).queue();
             return;
         }
@@ -77,12 +77,13 @@ public class PlayerRace extends ListenerAdapter {
             // Check if player can bet
             Player player1 = Casino.getPlayer(user1);
             Player player2 = Casino.getPlayer(user2);
-            if(bet > player2.getCash()) {
+            if(player2.checkBet(bet)) {
                 event.editMessageEmbeds(new EmbedBuilder()
                         .setDescription("You don't have enough to bet that much")
                         .setFooter(user2.getEffectiveName(), user2.getAvatarUrl()).build()).queue();
                 return;
             }
+
             String newMessage;
             int ran = (int) (Math.random()*2)+1;
             if(ran == 1) {
