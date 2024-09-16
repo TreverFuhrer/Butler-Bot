@@ -1,7 +1,7 @@
 package com.toki.butler.Casino.Commands.Games;
 
 import com.toki.butler.Casino.Casino;
-import com.toki.butler.Casino.Users.Player;
+import com.toki.butler.Casino.Player;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;

@@ -1,7 +1,7 @@
 package com.toki.butler.Casino.Commands.Games;
 
 import com.toki.butler.Casino.Casino;
-import com.toki.butler.Casino.Users.Player;
+import com.toki.butler.Casino.Player;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class PlayerRace extends ListenerAdapter {
@@ -85,23 +87,63 @@ public class PlayerRace extends ListenerAdapter {
             }
 
             String newMessage;
-            int ran = (int) (Math.random()*2)+1;
-            if(ran == 1) {
+            int ran = (int) (Math.random()*2)+1; // Choose winner
+
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setTitle("Player Race! :horse_racing::skin-tone-2:");
+            embed.setFooter(user1.getEffectiveName(), user1.getAvatarUrl());
+
+            // Set message to default game board
+            String[] defaultBoard = {":green_square:",":green_square:",":green_square:",":green_square:",":green_square:",":green_square:",":green_square:",":green_square:"};
+            newMessage = user1.getAsMention() + Arrays.toString(defaultBoard) + "\n"
+                    + user2.getAsMention() + Arrays.toString(defaultBoard);
+            embed.setDescription(newMessage);
+            event.editMessageEmbeds(embed.build()).setComponents(Collections.emptyList()).queue();
+
+            // Play game
+            int track1 = 0;
+            int track2 = 0;
+            boolean gameOver = false;
+            do {
+                // Progress game
+                int rand = (int) (Math.random() * 2) + 1;
+                if (rand == 1) ++track1;
+                else ++track2;
+                System.out.println("track1: " + track1);
+                System.out.println("track2: " + track2);
+                // Game Board
+                String[] top = defaultBoard.clone();
+                String[] bot = defaultBoard.clone();
+                top[track1] = ":horse_racing::skin-tone-2:";
+                bot[track2] = ":horse_racing::skin-tone-2:";
+
+                newMessage = user1.getAsMention() + Arrays.toString(top) + "\n"
+                        + user2.getAsMention() + Arrays.toString(bot);
+
+                // Update game message
+                embed.setDescription(newMessage);
+                event.editMessageEmbeds(embed.build()).setComponents(Collections.emptyList()).queue();
+
+                // Check if winner
+                if(track1 == 7 || track2 == 7) gameOver = true;
+            } while (!gameOver);
+
+            // Winning screen
+            if(track1 == 7) { // Player 1 Wins
                 player1.addCash(bet);
                 player2.removeCash(bet);
                 newMessage = user1.getAsMention() + " won $" + bet + "!" + "\nThey now have " + player1.getCash();
                 newMessage += "\n" + user2.getAsMention() + " lost $" + bet + "..." + "\nThey now have $" + player2.getCash();
             }
-            else {
+            else { // Player 2 Wins
                 player2.addCash(bet);
                 player1.removeCash(bet);
                 newMessage = user2.getAsMention() + " won $" + bet + "!" + "\nThey now have " + player2.getCash();
                 newMessage += "\n" + user1.getAsMention() + " lost $" + bet + "..." + "\nThey now have $" + player1.getCash();
             }
-            EmbedBuilder embed = new EmbedBuilder();
-            embed.setTitle("Player Race!");
+
+            // Change message
             embed.setDescription(newMessage);
-            embed.setFooter(user1.getEffectiveName(), user1.getAvatarUrl());
             event.editMessageEmbeds(embed.build()).setComponents(Collections.emptyList()).queue();
         }
         else if (event.getComponentId().equals("PRcancel")) {

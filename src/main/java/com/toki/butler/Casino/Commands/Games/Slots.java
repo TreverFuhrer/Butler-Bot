@@ -1,7 +1,7 @@
 package com.toki.butler.Casino.Commands.Games;
 
 import com.toki.butler.Casino.Casino;
-import com.toki.butler.Casino.Users.Player;
+import com.toki.butler.Casino.Player;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;

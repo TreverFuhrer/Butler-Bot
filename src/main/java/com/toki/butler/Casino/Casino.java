@@ -1,6 +1,5 @@
 package com.toki.butler.Casino;
 
-import com.toki.butler.Casino.Users.Player;
 import net.dv8tion.jda.api.entities.User;
 import org.json.JSONObject;
 

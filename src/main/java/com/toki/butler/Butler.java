@@ -21,7 +21,7 @@ public class Butler {
 
 
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
-        builder.setActivity(Activity.customStatus("\uD83C\uDF77" + " gang"));
+        builder.setActivity(Activity.customStatus("\uD83C\uDF77" + " yess"));
         JDA jda = builder
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS)

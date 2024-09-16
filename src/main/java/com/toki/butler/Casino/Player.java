@@ -1,4 +1,4 @@
-package com.toki.butler.Casino.Users;
+package com.toki.butler.Casino;
 
 import org.json.JSONObject;
 
@@ -61,7 +61,7 @@ public class Player {
     }
 
     public boolean checkBet(double bet) {
-        return bet < this.getCash();
+        return bet > this.getCash();
     }
 
     /*
