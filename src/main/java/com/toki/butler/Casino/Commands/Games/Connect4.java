@@ -19,6 +19,12 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Connect4 extends ListenerAdapter {
+    String emptySlot = "<:C4Slot:1286424269177225339>";
+    String yellowSlot = "<:C4Yellow:1286424278467612763>";
+    String redSlot = "<:C4Red:1286424287242354748>";
+    String[] yellowSlots = {"<a:y1:1286424010413834332>", "<a:y2:1286424017586356237>", "<a:y3:1286424025425248306>", "<a:y4:1286424045394333752>", "<a:y5:1286424052797280277>", "<a:y6:1286424060925968445>"};
+    String[] redSlots = {"<a:r1:1286424149513863229>", "<a:r2:1286424155822100585>", "<a:r3:1286424162528788501>", "<a:r4:1286424173081788418>", "<a:r5:1286424180442796032>", "<a:r6:1286424188638199879>"};
+
     public static void connect4Command(SlashCommandInteractionEvent event, User user)
     {
         double bet;
@@ -94,7 +100,7 @@ public class Connect4 extends ListenerAdapter {
             StringBuilder board = new StringBuilder();
             board.append(">>> ");
             for(int j = 0; j < 6; j++)
-                board.append("<:C4Slot:1187962918604648519>".repeat(7)).append("\n");
+                board.append(this.emptySlot.repeat(7)).append("\n");
 
             // Create Action Row
             ActionRow row1 = ActionRow.of(Button.secondary("C4Col1", "1"),
@@ -111,7 +117,7 @@ public class Connect4 extends ListenerAdapter {
                     .setColor(Color.decode("#75BFEC"))
                     .setDescription(board.toString())
                     .addField("Bet  -  $" + bet,"It's " + user2.getAsMention() + "'s turn!", false)
-                    .addField("", user1.getAsMention() + "<:C4CY:1187991986817470536> vs " + user2.getAsMention() + "<:C4CR:1187992009269579907>", false)
+                    .addField("", user1.getAsMention() + this.yellowSlot + " vs " + user2.getAsMention() + this.redSlot, false)
                     .build())
                     .setComponents(row1,row2)
                     .queue();
@@ -161,7 +167,7 @@ public class Connect4 extends ListenerAdapter {
             // Get Move's Index
             int moveIndex = -1;
             for(int i = 0; i < 6; i++)
-                if (board[i][col].equals("<:C4Slot:1187962918604648519>"))
+                if (board[i][col].equals(this.emptySlot))
                     moveIndex = i;
             // If col was full ask for new move
             if(moveIndex == -1) {
@@ -169,17 +175,14 @@ public class Connect4 extends ListenerAdapter {
                 return;
             }
 
-            String[] yellow = {"<a:y1:1187963132262481970>", "<a:y2:1187963133562736742>", "<a:y3:1187963136389685258>", "<a:y4:1187963137593454763>", "<a:y5:1187963139812237384>", "<a:y6:1187963141674520636>"};
-            String[] red = {"<a:r1:1187981853571956786>", "<a:r2:1187981854624722964>", "<a:r3:1187981856264695808>", "<a:r4:1187981856927383573>", "<a:r5:1187981859712421918>", "<a:r6:1187981861343993936>"};
-
             // Create Static message & check if won
             boolean won;
             if(chip.equals("yellow")) {
-                board[moveIndex][col] = "<:C4Yellow:1187962970437853247>";
+                board[moveIndex][col] = this.yellowSlot;
                 won = Connect4.checkWon(board, "yellow");
             }
             else {
-                board[moveIndex][col] = "<:C4Red:1187963037764833330>";
+                board[moveIndex][col] = this.redSlot;
                 won = Connect4.checkWon(board, "red");
             }
 
@@ -195,9 +198,9 @@ public class Connect4 extends ListenerAdapter {
             int emojiVal = 0;
             for(int i = moveIndex; i >= 0; i--) {
                 if(chip.equals("yellow"))
-                    board[i][col] = yellow[emojiVal];
+                    board[i][col] = this.yellowSlots[emojiVal];
                 else
-                    board[i][col] = red[emojiVal];
+                    board[i][col] = this.redSlots[emojiVal];
                 emojiVal++;
             }
 
@@ -235,7 +238,7 @@ public class Connect4 extends ListenerAdapter {
                             .setColor(Color.decode("#75BFEC"))
                             .setDescription(animMessage)
                             .addField("Bet  -  $" + bet,"It's " + newMention + "'s turn!", false)
-                            .addField("", user1.getAsMention() + "<:C4CY:1187991986817470536> vs " + user2.getAsMention() + "<:C4CR:1187992009269579907>", false)
+                            .addField("", user1.getAsMention() + this.yellowSlot + " vs " + user2.getAsMention() + this.redSlot, false)
                             .build())
                     .setComponents(row1,row2)
                     .queue();
@@ -246,7 +249,7 @@ public class Connect4 extends ListenerAdapter {
                     .setColor(Color.decode("#75BFEC"))
                     .setDescription(staticMessage)
                     .addField("Bet  -  $" + bet,"It's " + newMention + "'s turn!", false)
-                    .addField("", user1.getAsMention() + "<:C4CY:1187991986817470536> vs " + user2.getAsMention() + "<:C4CR:1187992009269579907>", false)
+                    .addField("", user1.getAsMention() + this.yellowSlot + " vs " + user2.getAsMention() + this.redSlot, false)
                     .build())
                     .setComponents(row1,row2)
                     .queueAfter(800, TimeUnit.MILLISECONDS);
@@ -270,7 +273,7 @@ public class Connect4 extends ListenerAdapter {
                                 .setColor(Color.GREEN)
                                 .setDescription(staticMessage)
                                 .addField("You got the $" + bet + "!",":confetti_ball: " + (user1Turn ? user1.getAsMention() : user2.getAsMention()) + " won! :tada:", false)
-                                .addField("", user1.getAsMention() + "<:C4CY:1187991986817470536> vs " + user2.getAsMention() + "<:C4CR:1187992009269579907>", false)
+                                .addField("", user1.getAsMention() + this.yellowSlot + " vs " + user2.getAsMention() + this.redSlot, false)
                                 .build())
                         .setComponents(Collections.emptyList())
                         .queueAfter(1100, TimeUnit.MILLISECONDS);
